@@ -21,9 +21,10 @@ export async function POST(req: NextRequest) {
     })
     if (response.ok) {
       const { data } = await response.json();
+      console.log(data);
 
       // When Token is returned. Add it to cookie. Cookie will be saved to browser
-      const serialized = serialize(COOKIE_NAME, data.accessToken, {
+      const serialized = serialize(COOKIE_NAME, data, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",

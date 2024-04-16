@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers"
-import { useParams } from 'next/navigation'
 
 const API_URL = process.env.BASE_API_URL;
 const COOKIE_NAME = process.env.NEXT_PUBLIC_COOKIE_NAME || "defaultCookie";
 
 
 // DELETE todo
-export async function DELETE(req: NextRequest,) {
+export async function DELETE(req: NextRequest, context: { params: { id: number } }) {
   try {
-    const params = useParams();
     const cookieStore = cookies();
     const cookie = cookieStore.get(COOKIE_NAME);
 
@@ -24,7 +22,7 @@ export async function DELETE(req: NextRequest,) {
       })
     }
     const { value: token } = cookie;
-    const { id } = params;
+    const id = context.params.id;
 
     const response = await fetch(`${API_URL}/api/v1/todo/${id}`, {
       headers: {
@@ -52,9 +50,9 @@ export async function DELETE(req: NextRequest,) {
 }
 
 // UPDATE todo
-export async function PATCH(req: NextRequest,) {
+export async function PATCH(req: NextRequest, context: { params: { id: number } }) {
   try {
-    const params = useParams();
+
     const cookieStore = cookies();
     const cookie = cookieStore.get(COOKIE_NAME);
 
@@ -69,12 +67,13 @@ export async function PATCH(req: NextRequest,) {
       })
     }
     const { value: token } = cookie;
-    const { id } = params;
+    const id = context.params.id;
     const { content, complete } = await req.json();
 
     const response = await fetch(`${API_URL}/api/v1/todo/${id}`, {
       headers: {
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
       method: "PATCH",
       body: JSON.stringify({

@@ -26,12 +26,10 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<head />
 			<body
-				className={"min-h-screen bg-background font-sans antialiased"}
-			>
+				className="min-h-screen bg-background ">
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col h-screen">
-
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+					<div className="relative flex flex-col h-screen ">
+						<main className="flex pt-16 px-6 justify-center w-full">
 							{children}
 						</main>
 

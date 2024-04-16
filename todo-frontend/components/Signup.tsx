@@ -4,7 +4,7 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button"
 import { Spinner } from "@nextui-org/spinner"
 
-export default function App() {
+export default function Signup() {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -95,7 +95,6 @@ export default function App() {
           </div>
         )
       }
-
     </>
   );
 }

@@ -46,7 +46,6 @@ const Login = (props: Props) => {
     }
   }
 
-
   return (
     <>
       <div className='w-full h-full flex justify-center p-32'>
