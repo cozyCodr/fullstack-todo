@@ -1,16 +1,20 @@
 version: '3'
 services:
   spring-boot-app:
-    image: your-spring-boot-image # Replace 'your-spring-boot-image' with the image name of your Spring Boot application
+    image: todo
     ports:
       - "8080:8080"
     depends_on:
       - postgresql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgresql:5432/tododb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: password
   postgresql:
     image: postgres:latest
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
-      POSTGRES_DB: your_database_name # Replace 'your_database_name' with your desired database name
-      POSTGRES_USER: your_username # Replace 'your_username' with your desired username
-      POSTGRES_PASSWORD: your_password # Replace 'your_password' with your desired password
+      POSTGRES_DB: tododb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
