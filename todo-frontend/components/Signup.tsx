@@ -70,6 +70,7 @@ export default function Signup() {
                     label="Password"
                     labelPlacement='outside'
                     placeholder='*********'
+                    type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     fullWidth
