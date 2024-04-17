@@ -4,11 +4,16 @@ import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button"
 import { Spinner } from "@nextui-org/spinner"
 
-export default function Signup() {
+type Props = {
+  loading: boolean;
+  setLoading: (bool: boolean) => void
+}
+
+export default function Signup({ loading, setLoading }: Props) {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   async function registerAccount() {
     try {
@@ -27,18 +32,24 @@ export default function Signup() {
 
         if (response.ok) {
           setLoading(false);
-          onClose();
-          console.log(await response.json())
+          setMessage("Account created. Login");
+          setTimeout(() => {
+            setMessage("");
+            onClose();
+          }, 1500)
+
         }
         else {
-          console.log(await response.json())
-          setLoading(false);
+          const { message } = await response.json();
+          throw new Error(message);
         }
 
       }
     }
     catch (error: any) {
       console.log(error.message)
+      setMessage(error.message);
+      setLoading(false);
     }
   }
 
@@ -49,7 +60,10 @@ export default function Signup() {
         <ModalContent>
           {(onClose: any) => (
             <>
-              <ModalHeader className="flex flex-col gap-1">Create Account</ModalHeader>
+              <ModalHeader className="flex justify-between w-fullgap-1">
+                <p>Create Account</p>
+                <p className="text-green-700 text-[12px]">{message}</p>
+              </ModalHeader>
               <ModalBody>
                 <div className='flex flex-col w-full gap-4'>
                   <Input
@@ -76,6 +90,13 @@ export default function Signup() {
                     fullWidth
                   />
                 </div>
+                {
+                  loading && (
+                    <div className="fixed left-0 top-0 w-full h-screen bg-black/70 flex justify-center items-center">
+                      <Spinner color="white" />
+                    </div>
+                  )
+                }
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
@@ -89,13 +110,7 @@ export default function Signup() {
           )}
         </ModalContent>
       </Modal>
-      {
-        loading && (
-          <div className="fixed left-0 top-0 w-full h-screen bg-black/70 flex justify-center items-center">
-            <Spinner color="white" />
-          </div>
-        )
-      }
+
     </>
   );
 }

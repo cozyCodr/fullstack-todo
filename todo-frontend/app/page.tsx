@@ -14,6 +14,7 @@ const Login = (props: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState(false);
 
   async function login() {
     try {
@@ -35,14 +36,16 @@ const Login = (props: Props) => {
           console.log(await response.json())
         }
         else {
-          console.log(await response.json())
-          setLoading(false);
+          const { message } = await response.json()
+          setMessage(message);
+          throw new Error(message);
         }
 
       }
     }
     catch (error: any) {
       console.log(error.message)
+      setLoading(false);
     }
   }
 
@@ -80,8 +83,11 @@ const Login = (props: Props) => {
               />
               <Button onPress={login} radius="sm" color="primary">Login</Button>
             </div>
+            <div className='flex justify-center w-full'>
+              <p className='text-[12px]'>{message}</p>
+            </div>
             <div className=' flex w-full justify-center items-center'>
-              Already have an account? <Signup />
+              Already have an account? <Signup loading={loading} setLoading={setLoading} />
             </div>
           </div>
         </form>
